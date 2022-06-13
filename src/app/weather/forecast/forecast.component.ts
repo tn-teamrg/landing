@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ForecastService } from '../forecast.service';
 
 @Component({
@@ -7,12 +8,21 @@ import { ForecastService } from '../forecast.service';
   styleUrls: ['./forecast.component.css']
 })
 export class ForecastComponent implements OnInit {
-  forecastData: { dateString: string; temp: number; }[] = [];
+  // forecastData: { dateString: string; temp: number; }[] = [];
+
+  forecast$!: Observable<{ dateString: string; temp: number; }[]>;
 
   constructor(private forecastService: ForecastService) {
+    // * NOTE:retrieve weather forecast via async pipe
+    this.forecast$ = this.forecastService.getForecast();
+
     // * NOTE:retrieve weather forecast
-    this.forecastService.getForecast()
-      .subscribe(forecastData => this.forecastData = forecastData );
+    // this.forecastService.getForecast()
+    //   .subscribe(
+    //     forecastData => {
+    //       this.forecastData = forecastData,
+    //       console.log(forecastData)
+    //   });
 
     // * NOTE: basic http request to retrieve weather data
     // this.forecastService.getCurrentLocation()
